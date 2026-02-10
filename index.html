@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teddy Day</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
+}
+
+body{
+  background-color:#f8c8dc;
+  height:100vh;
+  overflow:hidden;
+}
+
+.screen{
+  display:none;
+  height:100vh;
+  width:100%;
+  text-align:center;
+  padding:20px;
+}
+
+.show{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+
+h2{
+  color:#6b003f;
+  margin-bottom:20px;
+}
+
+.gift{
+  width:120px;
+  height:120px;
+  background-color:#ff5c8a;
+  border-radius:20px;
+  margin:20px;
+  animation:bounce 1.5s infinite;
+}
+
+button{
+  padding:12px 30px;
+  border:none;
+  border-radius:25px;
+  font-size:16px;
+  background-color:#ff5c8a;
+  color:white;
+  cursor:pointer;
+}
+
+.bear{
+  width:140px;
+  height:140px;
+  background-color:#d28aa6;
+  border-radius:50%;
+  margin-bottom:20px;
+  position:relative;
+}
+
+.bear:before,
+.bear:after{
+  content:"";
+  width:40px;
+  height:40px;
+  background-color:#d28aa6;
+  border-radius:50%;
+  position:absolute;
+  top:-15px;
+}
+
+.bear:before{ left:10px; }
+.bear:after{ right:10px; }
+
+.bubble{
+  background-color:white;
+  padding:15px 20px;
+  border-radius:20px;
+  min-height:40px;
+  max-width:80%;
+  color:#333;
+  white-space:pre-wrap;
+}
+
+#finalText{
+  margin-top:20px;
+  color:#6b003f;
+  font-size:24px;
+}
+
+@keyframes bounce{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-10px); }
+}
+
+.heart{
+  position:absolute;
+  top:-20px;
+  width:18px;
+  height:18px;
+  background-color:#ff4d6d;
+  transform:rotate(45deg);
+  animation:fall 3.5s linear forwards;
+}
+
+.heart:before,
+.heart:after{
+  content:"";
+  width:18px;
+  height:18px;
+  background-color:#ff4d6d;
+  border-radius:50%;
+  position:absolute;
+}
+
+.heart:before{ top:-9px; left:0; }
+.heart:after{ left:-9px; top:0; }
+
+@keyframes fall{
+  to{
+    transform:translateY(110vh) rotate(45deg);
+    opacity:0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="giftScreen" class="screen show">
+  <h2>A small teddy day surprise for you Shreya</h2>
+  <div class="gift"></div>
+  <button onclick="openGift()">Open Gift</button>
+</div>
+
+<div id="teddyScreen" class="screen">
+  <div class="bear"></div>
+  <div id="message" class="bubble"></div>
+  <div id="finalText"></div>
+</div>
+
+<script>
+var messages = [
+  "Hi Shreya",
+  "I came here with a little surprise",
+  "Someone wanted to send you a warm hug",
+  "Whenever you feel low remember this",
+  "You are loved and you are special"
+];
+
+var msgIndex = 0;
+var charIndex = 0;
+
+function openGift(){
+  document.getElementById("giftScreen").className = "screen";
+  document.getElementById("teddyScreen").className = "screen show";
+  startHearts();
+  showMessage();
+}
+
+function showMessage(){
+  if(msgIndex >= messages.length){
+    document.getElementById("finalText").innerText =
+      "Happy Teddy Day Shreya";
+    return;
+  }
+
+  var box = document.getElementById("message");
+  box.innerText = "";
+  charIndex = 0;
+
+  var typing = setInterval(function(){
+    box.innerText = messages[msgIndex].substring(0, charIndex + 1);
+    charIndex++;
+
+    if(charIndex === messages[msgIndex].length){
+      clearInterval(typing);
+      msgIndex++;
+      setTimeout(showMessage, 2500);
+    }
+  }, 60);
+}
+
+function startHearts(){
+  var interval = setInterval(function(){
+    var heart = document.createElement("div");
+    heart.className = "heart";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+
+    setTimeout(function(){
+      heart.remove();
+    }, 3500);
+  }, 400);
+
+  setTimeout(function(){
+    clearInterval(interval);
+  }, 3500);
+}
+</script>
+
+</body>
+</html>
